@@ -8,9 +8,9 @@ and a history of past wallpapers.
 Built with **.NET 10 / WPF**. Small, native, and stays out of your way.
 
 <p align="center">
-  <img src="Media/current.png" alt="Current photo tab" width="30%" />
-  <img src="Media/settings.png" alt="Settings tab" width="30%" />
-  <img src="Media/history.png" alt="History tab" width="30%" />
+  <img src="Screenshots/current.png" alt="Current photo tab" width="30%" />
+  <img src="Screenshots/settings.png" alt="Settings tab" width="30%" />
+  <img src="Screenshots/history.png" alt="History tab" width="30%" />
 </p>
 
 <p align="center">
