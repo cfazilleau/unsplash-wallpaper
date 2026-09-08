@@ -1,0 +1,87 @@
+name: Build & Release
+
+# Build a standalone Windows executable and publish it as a GitHub Release
+# whenever a version tag (e.g. v1.0.0) is pushed. Can also be run manually.
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to build (e.g. 1.0.0). Used only for manual runs.'
+        required: false
+        default: '0.0.0-dev'
+
+permissions:
+  contents: write   # required to create the release
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Resolve version
+        id: version
+        shell: bash
+        run: |
+          if [ "${{ github.ref_type }}" = "tag" ]; then
+            V="${GITHUB_REF_NAME#v}"
+          else
+            V="${{ github.event.inputs.version }}"
+          fi
+          echo "value=$V" >> "$GITHUB_OUTPUT"
+          echo "Building version $V"
+
+      - name: Restore
+        run: dotnet restore UnsplashWallpaper.csproj
+
+      - name: Publish (self-contained single file)
+        run: >
+          dotnet publish UnsplashWallpaper.csproj
+          -c Release
+          -r win-x64
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:DebugType=none
+          -p:DebugSymbols=false
+          -p:Version=${{ steps.version.outputs.value }}
+          -o publish
+
+      - name: Name the executable
+        id: package
+        shell: pwsh
+        run: |
+          $name = "UnsplashWallpaper-v${{ steps.version.outputs.value }}-win-x64.exe"
+          Copy-Item publish/UnsplashWallpaper.exe $name -Force
+          "artifact=$name" >> $env:GITHUB_OUTPUT
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: UnsplashWallpaper-win-x64
+          path: ${{ steps.package.outputs.artifact }}
+
+      - name: Create GitHub Release
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v2
+        with:
+          name: Unsplash Wallpaper ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
+          generate_release_notes: true
+          files: ${{ steps.package.outputs.artifact }}
+          body: |
+            Standalone Windows build (x64). No .NET runtime required — just download and run
+            the `.exe` below.
+
+            On first launch, add your free Unsplash Access Key in **Settings**
+            (get one at https://unsplash.com/developers).

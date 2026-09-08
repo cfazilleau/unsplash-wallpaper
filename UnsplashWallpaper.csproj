@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>false</UseWindowsForms>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ApplicationIcon>Assets\tray.ico</ApplicationIcon>
+    <RootNamespace>UnsplashWallpaper</RootNamespace>
+    <AssemblyName>UnsplashWallpaper</AssemblyName>
+    <Version>1.0.0</Version>
+    <Product>Unsplash Wallpaper</Product>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="H.NotifyIcon.Wpf" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Embed the icon in the assembly so it loads under single-file publish. -->
+    <Resource Include="Assets\tray.ico" />
+  </ItemGroup>
+
+</Project>
