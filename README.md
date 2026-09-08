@@ -1,4 +1,4 @@
-# 🖼️ Unsplash Wallpaper
+# <img src="Assets/icon.png" alt="" height="28" valign="middle" /> Unsplash Wallpaper
 
 A lightweight **Windows system-tray** app that automatically refreshes your desktop
 wallpaper with beautiful photos from [Unsplash](https://unsplash.com), on a schedule you
@@ -42,21 +42,12 @@ Built with **.NET 10 / WPF**. Small, native, and stays out of your way.
 
 ## 🚀 Getting started
 
-### 1. Get a free Unsplash Access Key
+### Download & run
 
-The official Unsplash API requires a key (the old keyless endpoint was retired).
-
-1. Go to <https://unsplash.com/developers> and sign in.
-2. **New Application** → accept the API terms → name it.
-3. Copy the **Access Key** (the *Client-ID*, not the Secret Key).
-
-The free *Demo* tier allows 50 requests/hour — far more than wallpaper changes ever need.
-
-### 2. Install
-
-Download the latest `UnsplashWallpaper-vX.Y.Z-win-x64.exe` from the
-[**Releases**](../../releases) page and run it. It's a self-contained build — no .NET
-runtime required.
+Grab the latest `UnsplashWallpaper-vX.Y.Z-win-x64.exe` from the
+[**Releases**](../../releases) page and double-click it. It's a single self-contained file —
+no installer, no .NET runtime needed. The app lives in your system tray; if you don't see the
+icon, click the `^` overflow arrow next to the clock.
 
 > [!IMPORTANT]
 > The executable is **unsigned**, so Windows SmartScreen may show a
@@ -64,10 +55,20 @@ runtime required.
 > apps without a paid code-signing certificate — click **More info → Run anyway** to
 > continue.
 
-### 3. Configure
+### Get a free Unsplash Access Key
 
-On first launch the **Settings** popup opens automatically. Paste your Access Key, pick a
-source and interval, and you're done — the first wallpaper is fetched right away.
+The app needs an Unsplash API key to fetch photos. It's free and takes about a minute:
+
+1. Open <https://unsplash.com/developers> and sign in (create an account if needed).
+2. Click **New Application**, accept the terms, and give it any name.
+3. Copy the **Access Key** — the value labelled *Client-ID* (**not** the Secret Key).
+
+> The free *Demo* tier allows 50 requests/hour — far more than wallpaper changes ever need.
+
+### Paste the key
+
+On first launch the **Settings** popup opens automatically. Paste your Access Key, choose an
+image source and how often to change, and you're set — the first wallpaper appears right away.
 
 ## 🛠️ Build from source
 
@@ -89,57 +90,20 @@ dotnet publish -c Release -r win-x64 --self-contained true ^
 The single `UnsplashWallpaper.exe` lands in
 `bin/Release/net10.0-windows/win-x64/publish/`.
 
-## 📦 Releases
-
-Pushing a version tag builds and publishes a GitHub Release automatically
-(see [`.github/workflows/release.yml`](.github/workflows/release.yml)):
-
-```bash
-git tag v1.0.0
-git push origin v1.0.0
-```
-
-## 📂 Where things are stored
-
-| Data | Location |
-|------|----------|
-| Settings | `%APPDATA%\UnsplashWallpaper\settings.json` |
-| History  | `%LOCALAPPDATA%\UnsplashWallpaper\history.json` |
-| Image cache | `%LOCALAPPDATA%\UnsplashWallpaper\cache\` |
-
-## 🧱 Project layout
-
-| Path | Purpose |
-|------|---------|
-| `App.xaml(.cs)` | Startup, tray icon + menu, single-instance guard, wiring |
-| `Models/` | `AppSettings`, `UnsplashPhoto` (API DTOs), `WallpaperRecord` |
-| `Services/UnsplashClient.cs` | Unsplash API calls, image/thumbnail download, download-tracking |
-| `Services/WallpaperService.cs` | Win32 `SystemParametersInfo` + registry fit style |
-| `Services/WallpaperManager.cs` | Fetch → download → apply → record history |
-| `Services/SchedulerService.cs` | Interval timer based on last-change timestamp |
-| `Services/SettingsService.cs` · `HistoryService.cs` | JSON persistence |
-| `Services/StartupService.cs` | HKCU `Run` key for launch-at-login |
-| `Views/PopupWindow.xaml(.cs)` | Tabbed popup UI (dark theme) |
-| `ViewModels/PopupViewModel.cs` | Bindable state, commands, autosave |
-
-## 📝 Attribution
+## 📝 Attribution & disclaimer
 
 Photos are provided by [Unsplash](https://unsplash.com) and their respective photographers.
-This app follows the [Unsplash API guidelines](https://help.unsplash.com/en/articles/2511245-unsplash-api-guidelines):
-it credits photographers with referral links and triggers the required download endpoint
+The app follows the [Unsplash API guidelines](https://help.unsplash.com/en/articles/2511245-unsplash-api-guidelines):
+it credits each photographer with referral links and triggers the required download endpoint
 whenever a photo is applied.
+
+That said, we're aware this use case isn't permitted under the
+[Unsplash API Terms](https://unsplash.com/api-terms) — automatically downloading photos to set
+them as wallpapers falls outside their allowed usage. This project exists only because the
+**official [Unsplash Wallpapers](https://apps.apple.com/app/unsplash-wallpapers/id1284863847)
+app is macOS-only**; it's essentially an unofficial Windows port for personal use. It is not
+affiliated with, endorsed by, or connected to Unsplash in any way. Use at your own discretion.
 
 ## 📄 License
 
 MIT — see [LICENSE](LICENSE).
-
-## ⚠️ Disclaimer
-
-We're aware that this use case isn't permitted under the
-[Unsplash API Terms](https://unsplash.com/api-terms) — automatically downloading photos to
-set them as wallpapers falls outside their allowed usage. This project exists only because
-the **official [Unsplash Wallpapers](https://apps.apple.com/app/unsplash-wallpapers/id1284863847)
-app is macOS-only**; it's essentially an unofficial Windows port for personal use.
-
-It is not affiliated with, endorsed by, or connected to Unsplash in any way. Use at your
-own discretion.
