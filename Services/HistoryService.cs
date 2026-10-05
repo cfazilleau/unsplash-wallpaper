@@ -45,6 +45,16 @@ public class HistoryService
         Save();
     }
 
+    /// <summary>Makes an existing record the current one by moving it to the front of the list.</summary>
+    public void MoveToFront(WallpaperRecord record)
+    {
+        var index = Records.IndexOf(record);
+        if (index <= 0)
+            return;
+        Records.Move(index, 0);
+        Save();
+    }
+
     private void TrimAndCleanup(int limit)
     {
         while (Records.Count > limit)

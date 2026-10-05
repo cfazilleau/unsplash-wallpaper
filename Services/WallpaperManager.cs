@@ -99,6 +99,7 @@ public class WallpaperManager
                 return false;
             }
             _wallpaper.SetWallpaper(record.LocalPath, _settingsService.Settings.WallpaperStyle);
+            _history.MoveToFront(record);
             Changed?.Invoke(record);
             return true;
         }
